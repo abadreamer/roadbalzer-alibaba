@@ -8,8 +8,8 @@ python .\runmodel.py --imagepath 0a4f38c94dd63cd8e5b9209dc9892146.jpg
 -- imagepath: Path of the image to be tried using the model
 
 ## Prerequisites
-Python 3.8.10
-PIP
+* Python 3.8.10
+* PIP
 
 ## Overview
 The program uses the model developed by RoadBalzer  team as an input and an image 
