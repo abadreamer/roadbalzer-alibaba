@@ -13,14 +13,14 @@ PIP
 ## Overview
 The program uses the model developed by roadblzer team as an input, and an image 
 input:
-1- model developed by roadblzer team as an input
-2- Image given by the user containing visaul pollution elements 
+1. model developed by roadblzer team as an input
+2. Image given by the user containing visaul pollution elements 
 output: 
-1- Visual polution classes detected in the input image 
-2- Resulting image with classes highlighted
+1. Visual polution classes detected in the input image 
+2. Resulting image with classes highlighted
 
 
-## Description
-1- Clone yolov7 from GitHub, install yolov7 prerequisites
-2- Download our model from s3 bucket 
-3- Run the detection
+## Description of the code
+1. Clone yolov7 from GitHub, install yolov7 prerequisites
+2. Download our model from s3 bucket 
+3. Run the detection
