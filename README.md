@@ -4,6 +4,7 @@ Theme 1 is regarding the detection and evaluation of visual pollution elements o
 
 ## Usage
 python .\runmodel.py --imagepath 0a4f38c94dd63cd8e5b9209dc9892146.jpg
+
 -- imagepath: Path of image to be tested using the model
 
 ## Prerequisites
