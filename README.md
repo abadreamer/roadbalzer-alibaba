@@ -13,6 +13,7 @@ python .\runmodel.py --imagepath 0a4f38c94dd63cd8e5b9209dc9892146.jpg
 
 ## Overview
 The program uses the model developed by RoadBalzer  team as an input and an image 
+
 Input:
 
 1. ML Model developed by RoadBalzer team 
@@ -24,6 +25,6 @@ Output:
 
 
 ## Description of the code
-1. Clone yolov7 from GitHub, install yolov7 prerequisites
+1. Clone [yolov7](https://github.com/WongKinYiu/yolov7) from GitHub, install yolov7 prerequisites 
 2. Download our model from S3 bucket 
 3. Run the detection
