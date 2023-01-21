@@ -1,6 +1,21 @@
-import boto3;
 import os;
 import sys;
+import argparse;
+
+parser = argparse.ArgumentParser(description='This program is to test the ML model developed by roadblazer team');
+parser.add_argument('--imagepath', help='Path of image to be used')
+args = parser.parse_args()
+if (os.path.isfile(args.imagepath) == False ):
+    print("The given image path is not accessible");
+    exit();
+
+
+#installing program requirements using pip
+print('installing basic requirements boto2 and gitrepo')
+os.system("pip install -r ./requirements.txt")
+
+
+import boto3;
 from git import Repo; 
 
 #check if yolov7 folder exists
@@ -12,12 +27,12 @@ if (isYolov7Exists):
 else:
     print('Downloading yolov7 from github ...')
     Repo.clone_from(yolov7Git, yolov7FolderPath)
-    print('installin yolv7 requirements')
+    print('installing yolov7 requirements')
     os.system("pip install -r ./yolov7/requirements.txt")
 
+print("importing yolov7 into code")
 sys.path.append('./yolov7');
 from yolov7 import detect;
-
 
 
 #check if model file exists
@@ -30,7 +45,7 @@ if (isModelExists):
     print('skip model "model3_roadblazer" download as it already exists');
 else:
     #init s3 server  
-    print('Downloading roadblazer model from S3 ...')
+    print('Connecting to S3 to download "roadblazer" team model ...')
     s3 = boto3.client('s3', aws_access_key_id='AKIASQSBFOHHI5Q7NQ4N',
     aws_secret_access_key= '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');
     # create an empty file and download the model to it 
@@ -40,12 +55,12 @@ else:
     print(' roadblazer model downloaded successfully')
 
 # road_image_path = '0a4f38c94dd63cd8e5b9209dc9892146.jpg'
-road_image_path = input("Please enter image path: ")
+# road_image_path = input("Please enter image path: ")
 # detect.detect(weights=modelPath, conf=0.25, imgsz=640, source=road_image_path);
 
 
-detectCommand = "python .\yolov7\detect.py  --weights {weights1} --conf {conf} --img-size {imgsz} --source {source}";
-detectCommand = detectCommand.format(weights1=modelPath, conf=0.25, imgsz=640, source=road_image_path);
+detectCommand = "python .\yolov7\detect.py  --weights {weights} --conf {conf} --img-size {imgsz} --source {source}";
+detectCommand = detectCommand.format(weights=modelPath, conf=0.25, imgsz=640, source=args.imagepath);
 print(detectCommand);
 
 os.system(detectCommand);
