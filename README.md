@@ -13,10 +13,12 @@ python .\runmodel.py --imagepath 0a4f38c94dd63cd8e5b9209dc9892146.jpg
 
 ## Overview
 The program uses the model developed by RoadBalzer  team as an input and an image 
-input:
+Input:
+
 1. ML Model developed by RoadBalzer team 
 2. Image containing visual pollution elements (user input)
-output: 
+
+Output: 
 1. Visual pollution classes detected in the input image 
 2. Resulting image with classes highlighted
 
