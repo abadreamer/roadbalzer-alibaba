@@ -1,4 +1,4 @@
-# road blazer team submission test smartathon
+# smartathon hackathon - Road Blazer team submission 
 This is a test program that enables testing of the model developef by Road Balzer the for smartathon hackathon theme1, 
 Theme 1 is regarding the detection and evaluation of visual pollution elements on street imagery taken from a moving vehicle
 
