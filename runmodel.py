@@ -1,15 +1,50 @@
 import os;
 import sys;
 import argparse;
-import boto3;
-from git import Repo; 
+import oss2;
 sys.path.append('./yolov7');
 from yolov7 import detect;
 from yolov7 import detectfn;
 
+def uploadImage(roadImagePath):
+    endpoint = 'oss-me-central-1.aliyuncs.com';
+    access_key_id = os.getenv('OSS_TEST_ACCESS_KEY_ID',)
+    access_key_secret = os.getenv('OSS_TEST_ACCESS_KEY_SECRET',)
+    # print('keys values:', access_key_id, access_key_secret);
+    auth = oss2.Auth(access_key_id, access_key_secret);
+    # print('after authentiate', );
+    bucket = oss2.Bucket(auth, endpoint, 'roadbalzer-images');
+    # print('after access buket', );
+    buketPath = 'upload/{}'.format(roadImagePath);
+    # print(buketPath);
+    # imgObj = bucket.get_object(buketPath);
+    # content_got = b''
+    # for chunk in imgObj:
+    #     content_got += chunk
+    result = bucket.get_object_to_file(buketPath, 'downloadedimage.jpg');
+    # print(result);
 
-#check if yolov7 folder exists
+
+def downloadImage(roadImagePath):
+    endpoint = 'oss-me-central-1.aliyuncs.com';
+    access_key_id = os.getenv('OSS_TEST_ACCESS_KEY_ID',)
+    access_key_secret = os.getenv('OSS_TEST_ACCESS_KEY_SECRET',)
+    # print('keys values:', access_key_id, access_key_secret);
+    auth = oss2.Auth(access_key_id, access_key_secret);
+    # print('after authentiate', );
+    bucket = oss2.Bucket(auth, endpoint, 'roadbalzer-images');
+    # print('after access buket', );
+    buketPath = 'upload/{}'.format(roadImagePath);
+    # print(buketPath);
+    # imgObj = bucket.get_object(buketPath);
+    # content_got = b''
+    # for chunk in imgObj:
+    #     content_got += chunk
+    result = bucket.get_object_to_file(buketPath, roadImagePath);
+    # print(result);
+
 def roadBalzerDetect(roadImagePath):
+    #check if yolov7 folder exists
     yolov7FolderPath = './yolov7'
     if (os.path.exists(yolov7FolderPath)):
         print('yolov7 is installed');
@@ -19,6 +54,7 @@ def roadBalzerDetect(roadImagePath):
 
 
     #check if model file exists
+    # oss-me-central-1.aliyuncs.com
     s3_bucket_name = 'smartathon-submission'
     s3_model_path = 'model-v3/best3.pt'
     modelPath = './model3_roadblazer'
@@ -56,4 +92,5 @@ if __name__ == '__main__':
     if (os.path.isfile(args.imagepath) == False ):
         print("The given image path is not accessible");
         exit();
-    roadBalzerDetect(args.imagepath)
+    # roadBalzerDetect(args.imagepath)
+    downloadImage(args.imagepath);

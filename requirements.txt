@@ -1,5 +1,7 @@
-# Usage: pip install -r requirements.txt
+# windows Usage: pip install --no-cache-dir -r requirements.txt
+# linux centos Usage: pip install --no-cache-dir -r requirements.txt
 
 # Base ----------------------------------------
-gitpython
-boto3
+# gitpython
+# boto3 replace boto3 with oss for alibaba oject storage service
+oss2
