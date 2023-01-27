@@ -1,2 +1,6 @@
 traced_model.pt
 model3_roadblazer
+__pycache__
+runs/
+uploads/
+detectOutput/

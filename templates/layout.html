@@ -1,0 +1,17 @@
+<!doctype html>
+<title> Clean Riyad App </title>
+{% with messages = get_flashed_messages() %}
+  <table>
+  {% if messages %}
+  <tr>
+    <ul class=flashes>
+    {% for message in messages %}
+    <tr>
+      <li>{{ message }}</li>
+    </tr>
+    {% endfor %}
+    </ul>
+  {% endif %}
+</table>
+{% endwith %}
+{% block body %}{% endblock %}

@@ -1,11 +1,15 @@
-from flask import Flask, request, url_for, flash, redirect;
+from flask import Flask, request, url_for, flash, \
+    redirect, render_template;
 from werkzeug.utils import secure_filename;
 import runmodel;
 import os;
 
 app = Flask(__name__)
-app.config['MAX_CONTENT_LENGTH'] = 16 * 1000 * 1000
-ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1000 * 1000;
+app.secret_key = '655d15c18354e0e34d31c48d55fba78e19c44492a88d69e856fc3f302e0dbb14';
+
+# ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg',}
 
 def allowed_file(filename):
     return '.' in filename and \
@@ -24,8 +28,8 @@ def downloadImage():
     print(imagepath);
     return "<p> yarab 9!</p>"
 
-@app.route("/uploadImage", methods=['Get','Post'])
-def uploadImage():
+@app.route("/detectroadimage", methods=['Get','Post'])
+def detectRoadImage():
     if request.method == 'POST':
         print('in uploadImage', request.method);
         UPLOAD_FOLDER = './uploads'
@@ -48,16 +52,10 @@ def uploadImage():
             # return redirect(url_for('download_file', name=filename))
             print(filePath);
             runmodel.roadBalzerDetect(filePath, filename);
-            return 'success'
-    return '''
-    <!doctype html>
-    <title>Upload new File</title>
-    <h1>Upload new File</h1>
-    <form method=post enctype=multipart/form-data>
-      <input type=file name=file>
-      <input type=submit value=Upload>
-    </form>
-    '''
+            flash('detection succes')
+            return redirect(url_for('detectRoadImage'))
+    else:
+        return render_template('index.html')
 
 # @app.route('/', methods=['GET'])
 # def uploadForm():
@@ -72,4 +70,4 @@ def uploadImage():
 #     '''
 
 with app.test_request_context():
-    print(url_for('uploadImage', imagepath='000ed1547634a24f09f22530065d46c9.jpg'))
+    print(url_for('detectRoadImage', imagepath='000ed1547634a24f09f22530065d46c9.jpg'))
