@@ -1,8 +1,9 @@
 import os;
 import sys;
 import argparse;
-import oss2;
 import ossutils;
+import csv;
+
 sys.path.append('./yolov7');
 from yolov7 import detect;
 from yolov7 import detectfn;
@@ -39,6 +40,17 @@ from yolov7 import detectfn;
 #     result = bucket.get_object_to_file(buketPath, roadImagePath);
 #     # print(result);
 
+def parseLabels(detectPath, imageFileName):
+    labelsFileName = imageFileName[0:imageFileName.index('.')]+'.txt';
+    labelsFilePath = os.path.join(detectPath, 'exp', 'labels', labelsFileName);
+    detectionLabel ='class: {}, ';
+    detectionLabels ='';
+    with open(labelsFilePath, newline='') as csvfile:
+        spamreader = csv.reader(csvfile, delimiter=' ', quotechar=' ')
+        for row in spamreader:
+            detectionLabels = detectionLabels + detectionLabel.format(row[0]);
+    return detectionLabels;
+    
 def roadBalzerDetect(roadImagePath, imageFileName):
     #check if yolov7 folder exists
     yolov7FolderPath = './yolov7'
@@ -72,6 +84,7 @@ def roadBalzerDetect(roadImagePath, imageFileName):
         if (os.path.isfile(outputImage) == True ):
             print("detect succeeded: ", outputImage);
             ossutils.uploadImage(outputImage);
+            return parseLabels(detectPath, imageFileName);
         else:
             print("detect failed or detected image is not accessible");
     else:
@@ -80,7 +93,7 @@ def roadBalzerDetect(roadImagePath, imageFileName):
         detectCommand = detectCommand.format(weights1=modelPath, conf=0.25, imgsz=640, source=roadImagePath);
         print(detectCommand);
         os.system(detectCommand);
-    return 0;
+    return '';
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='This program is to test the ML model developed by roadblazer team');

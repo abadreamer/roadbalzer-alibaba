@@ -36,13 +36,13 @@ def detectRoadImage():
         # imagepath = request.form['imagepath'];
         # imagepath = '0a4f38c94dd63cd8e5b9209dc9892146.jpg';
         if 'file' not in request.files:
-            flash('No file part')
+            flash('No file part', 'error')
             return redirect(request.url)
         file = request.files['file']
         # If the user does not select a file, the browser submits an
         # empty file without a filename.
         if file.filename == '':
-            flash('No selected file')
+            flash('No selected file', 'error')
             return redirect(request.url)
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
@@ -51,8 +51,9 @@ def detectRoadImage():
             file.save(filePath);
             # return redirect(url_for('download_file', name=filename))
             print(filePath);
-            runmodel.roadBalzerDetect(filePath, filename);
-            flash('detection succes')
+            detectionLabels = runmodel.roadBalzerDetect(filePath, filename);
+            flash('detection succes');
+            flash(detectionLabels);
             return redirect(url_for('detectRoadImage'))
     else:
         return render_template('index.html')
