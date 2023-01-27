@@ -16,13 +16,8 @@ def uploadImage(roadImagePath):
     bucket = oss2.Bucket(auth, endpoint, 'roadbalzer-images');
     # print('after access buket', );
     buketPath = 'upload/{}'.format(roadImagePath);
-    # print(buketPath);
-    # imgObj = bucket.get_object(buketPath);
-    # content_got = b''
-    # for chunk in imgObj:
-    #     content_got += chunk
-    result = bucket.get_object_to_file(buketPath, 'downloadedimage.jpg');
-    # print(result);
+    result = bucket.put_object_from_file(buketPath, roadImagePath)
+    print(result);
 
 
 def downloadImage(roadImagePath):
@@ -43,7 +38,7 @@ def downloadImage(roadImagePath):
     result = bucket.get_object_to_file(buketPath, roadImagePath);
     # print(result);
 
-def roadBalzerDetect(roadImagePath):
+def roadBalzerDetect(roadImagePath, imageFileName):
     #check if yolov7 folder exists
     yolov7FolderPath = './yolov7'
     if (os.path.exists(yolov7FolderPath)):
@@ -61,28 +56,31 @@ def roadBalzerDetect(roadImagePath):
     isModelExists = os.path.isfile(modelPath)
 
     if (isModelExists):
-        print('skip model "model3_roadblazer" download as it already exists');
+        # print('skip model "model3_roadblazer" download as it already exists');
+        pass
     else:
-        #init s3 server  
-        print('Downloading roadblazer model from S3 ...')
-        s3 = boto3.client('s3');
-        # create an empty file and download the model to it 
-        print('Downloading roadblazer model from S3 ...')
-        with open('./model3_roadblazer', 'wb') as modelFile:
-            s3.download_fileobj(s3_bucket_name, s3_model_path, modelFile);
-        print(' roadblazer model downloaded successfully')
+        print('model is not accessible')
+        return -1;
+    
+    useDetectFn = True;
+    detectPath = 'detectOutput/'
 
-    runDetectwithOSCmd = False;
-
-    if not runDetectwithOSCmd:
-        detectfn.detectMain(source=roadImagePath, weights=modelPath, conf=0.25, imgsz=640, save_txt=True, classes=None);
+    if useDetectFn:
+        print('starting detect')
+        detectfn.detectMain(source=roadImagePath, weights=modelPath, conf=0.25, imgsz=640, 
+                             save_txt=True, classes=None, exist_ok=True, project=detectPath);
+        outputImage = os.path.join(detectPath, 'exp', imageFileName);
+        if (os.path.isfile(outputImage) == True ):
+            print("detect succeeded: ", outputImage);
+            uploadImage(outputImage);
+        else:
+            print("detect failed");
     else:
         # python './yolov7/detect.py' --weights './best3.pt' --conf 0.25 --img-size 640 --source .\0a4f38c94dd63cd8e5b9209dc9892146.jpg
-        detectCommand = "python .\yolov7\detect.py  --weights {weights1} --conf {conf} --img-size {imgsz} --save-txt --source {source} ";
+        detectCommand = "python ./yolov7/detect.py  --weights {weights1} --conf {conf} --img-size {imgsz} --save-txt --source {source} ";
         detectCommand = detectCommand.format(weights1=modelPath, conf=0.25, imgsz=640, source=roadImagePath);
         print(detectCommand);
         os.system(detectCommand);
-    
     return 0;
 
 if __name__ == '__main__':

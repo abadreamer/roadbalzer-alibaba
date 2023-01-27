@@ -1,4 +1,5 @@
 from flask import Flask, request, url_for, flash, redirect;
+from werkzeug.utils import secure_filename;
 import runmodel;
 import os;
 
@@ -21,7 +22,6 @@ def downloadImage():
     # imagepath = request.form['imagepath'];
     # imagepath = '0a4f38c94dd63cd8e5b9209dc9892146.jpg';
     print(imagepath);
-    # runmodel.downloadImage(imagepath);
     return "<p> yarab 9!</p>"
 
 @app.route("/uploadImage", methods=['Get','Post'])
@@ -41,12 +41,14 @@ def uploadImage():
             flash('No selected file')
             return redirect(request.url)
         if file and allowed_file(file.filename):
-            # filename = secure_filename(file.filename)
-            filename = file.filename
-            file.save(os.path.join(UPLOAD_FOLDER, filename))
+            filename = secure_filename(file.filename)
+            # filename = file.filename
+            filePath = os.path.join(UPLOAD_FOLDER, filename);
+            file.save(filePath);
             # return redirect(url_for('download_file', name=filename))
+            print(filePath);
+            runmodel.roadBalzerDetect(filePath, filename);
             return 'success'
-            print(filename);
     return '''
     <!doctype html>
     <title>Upload new File</title>
