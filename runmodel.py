@@ -2,56 +2,55 @@ import os;
 import sys;
 import argparse;
 import oss2;
+import ossutils;
 sys.path.append('./yolov7');
 from yolov7 import detect;
 from yolov7 import detectfn;
 
-def uploadImage(roadImagePath):
-    endpoint = 'oss-me-central-1.aliyuncs.com';
-    access_key_id = os.getenv('OSS_TEST_ACCESS_KEY_ID',)
-    access_key_secret = os.getenv('OSS_TEST_ACCESS_KEY_SECRET',)
-    # print('keys values:', access_key_id, access_key_secret);
-    auth = oss2.Auth(access_key_id, access_key_secret);
-    # print('after authentiate', );
-    bucket = oss2.Bucket(auth, endpoint, 'roadbalzer-images');
-    # print('after access buket', );
-    buketPath = 'upload/{}'.format(roadImagePath);
-    result = bucket.put_object_from_file(buketPath, roadImagePath)
-    print(result);
+# def uploadImage(roadImagePath):
+#     endpoint = 'oss-me-central-1.aliyuncs.com';
+#     access_key_id = os.getenv('OSS_TEST_ACCESS_KEY_ID',)
+#     access_key_secret = os.getenv('OSS_TEST_ACCESS_KEY_SECRET',)
+#     # print('keys values:', access_key_id, access_key_secret);
+#     auth = oss2.Auth(access_key_id, access_key_secret);
+#     # print('after authentiate', );
+#     bucket = oss2.Bucket(auth, endpoint, 'roadbalzer-images');
+#     # print('after access buket', );
+#     buketPath = 'upload/{}'.format(roadImagePath);
+#     result = bucket.put_object_from_file(buketPath, roadImagePath)
+#     print(result);
 
 
-def downloadImage(roadImagePath):
-    endpoint = 'oss-me-central-1.aliyuncs.com';
-    access_key_id = os.getenv('OSS_TEST_ACCESS_KEY_ID',)
-    access_key_secret = os.getenv('OSS_TEST_ACCESS_KEY_SECRET',)
-    # print('keys values:', access_key_id, access_key_secret);
-    auth = oss2.Auth(access_key_id, access_key_secret);
-    # print('after authentiate', );
-    bucket = oss2.Bucket(auth, endpoint, 'roadbalzer-images');
-    # print('after access buket', );
-    buketPath = 'upload/{}'.format(roadImagePath);
-    # print(buketPath);
-    # imgObj = bucket.get_object(buketPath);
-    # content_got = b''
-    # for chunk in imgObj:
-    #     content_got += chunk
-    result = bucket.get_object_to_file(buketPath, roadImagePath);
-    # print(result);
+# def downloadImage(roadImagePath):
+#     endpoint = 'oss-me-central-1.aliyuncs.com';
+#     access_key_id = os.getenv('OSS_TEST_ACCESS_KEY_ID',)
+#     access_key_secret = os.getenv('OSS_TEST_ACCESS_KEY_SECRET',)
+#     # print('keys values:', access_key_id, access_key_secret);
+#     auth = oss2.Auth(access_key_id, access_key_secret);
+#     # print('after authentiate', );
+#     bucket = oss2.Bucket(auth, endpoint, 'roadbalzer-images');
+#     # print('after access buket', );
+#     buketPath = 'upload/{}'.format(roadImagePath);
+#     # print(buketPath);
+#     # imgObj = bucket.get_object(buketPath);
+#     # content_got = b''
+#     # for chunk in imgObj:
+#     #     content_got += chunk
+#     result = bucket.get_object_to_file(buketPath, roadImagePath);
+#     # print(result);
 
 def roadBalzerDetect(roadImagePath, imageFileName):
     #check if yolov7 folder exists
     yolov7FolderPath = './yolov7'
     if (os.path.exists(yolov7FolderPath)):
-        print('yolov7 is installed');
+        print('yolov7 is accessible');
     else:
-        print('yolov7 is not installed')
+        print('yolov7 is not accessible')
         return -1;
 
 
     #check if model file exists
     # oss-me-central-1.aliyuncs.com
-    s3_bucket_name = 'smartathon-submission'
-    s3_model_path = 'model-v3/best3.pt'
     modelPath = './model3_roadblazer'
     isModelExists = os.path.isfile(modelPath)
 
@@ -72,9 +71,9 @@ def roadBalzerDetect(roadImagePath, imageFileName):
         outputImage = os.path.join(detectPath, 'exp', imageFileName);
         if (os.path.isfile(outputImage) == True ):
             print("detect succeeded: ", outputImage);
-            uploadImage(outputImage);
+            ossutils.uploadImage(outputImage);
         else:
-            print("detect failed");
+            print("detect failed or detected image is not accessible");
     else:
         # python './yolov7/detect.py' --weights './best3.pt' --conf 0.25 --img-size 640 --source .\0a4f38c94dd63cd8e5b9209dc9892146.jpg
         detectCommand = "python ./yolov7/detect.py  --weights {weights1} --conf {conf} --img-size {imgsz} --save-txt --source {source} ";
