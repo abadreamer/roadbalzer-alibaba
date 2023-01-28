@@ -18,8 +18,9 @@ The app helps municipalities to automatically detect visual pollution elements i
 1. ECS: Deploy ML model, deploy python application
 2. OSS: Store images before and after processing
 3. Absara PostgreSQL: Stores the detection results
-4. VPC: Private NW to connect the application elements
+4. VPC: Virtual Private Cloud NW to connect the application elements
 5. API Gateway
+6. Load balancer
 
 
 ## Usage
