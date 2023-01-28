@@ -24,6 +24,7 @@ The app helps municipalities to automatically detect visual pollution elements i
 
 ## Usage
 . initenv.sh
+
 nohup flask --app apiroutes run --host=0.0.0.0 &
 
 ## Prerequisites
