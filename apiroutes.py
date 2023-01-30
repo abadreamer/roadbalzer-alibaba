@@ -50,10 +50,11 @@ def detectRoadImage():
             filePath = os.path.join(UPLOAD_FOLDER, filename);
             file.save(filePath);
             # return redirect(url_for('download_file', name=filename))
-            print(filePath);
-            detectionLabels = runmodel.roadBalzerDetect(filePath, filename);
-            flash('detection succes');
-            flash(detectionLabels);
+            print('input file uploaded to: ' , filePath);
+            detectionClasses = runmodel.roadBalzerDetect(filePath, filename);
+            flash('Detection succes, Image have following Visual Pollution Classes: ');
+            for detectionClass in detectionClasses:
+                flash(detectionClass);
             return redirect(url_for('detectRoadImage'))
     else:
         return render_template('index.html')

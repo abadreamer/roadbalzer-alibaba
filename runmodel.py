@@ -8,6 +8,10 @@ sys.path.append('./yolov7');
 from yolov7 import detect;
 from yolov7 import detectfn;
 
+pollutionClasses = ['Graffiti', 'Faded Signage', 'Potholes', 'Garbage', 
+                    'Construction Road', 'Broken Signage', 'Bad Billboard',
+                    'Sand on Road', 'Clutter sidewalk', 'Unkept Facade'];
+
 # def uploadImage(roadImagePath):
 #     endpoint = 'oss-me-central-1.aliyuncs.com';
 #     access_key_id = os.getenv('OSS_TEST_ACCESS_KEY_ID',)
@@ -28,7 +32,7 @@ from yolov7 import detectfn;
 #     access_key_secret = os.getenv('OSS_TEST_ACCESS_KEY_SECRET',)
 #     # print('keys values:', access_key_id, access_key_secret);
 #     auth = oss2.Auth(access_key_id, access_key_secret);
-#     # print('after authentiate', );
+#   exit  # print('after authentiate', );
 #     bucket = oss2.Bucket(auth, endpoint, 'roadbalzer-images');
 #     # print('after access buket', );
 #     buketPath = 'upload/{}'.format(roadImagePath);
@@ -41,15 +45,19 @@ from yolov7 import detectfn;
 #     # print(result);
 
 def parseLabels(detectPath, imageFileName):
-    labelsFileName = imageFileName[0:imageFileName.index('.')]+'.txt';
+    labelsFileName = imageFileName[0:imageFileName.rindex('.')]+'.txt';
     labelsFilePath = os.path.join(detectPath, 'exp', 'labels', labelsFileName);
-    detectionLabel ='class: {}, ';
+    # detectionLabel =' ';
     detectionLabels ='';
+    detectedClasses = [];
     with open(labelsFilePath, newline='') as csvfile:
         spamreader = csv.reader(csvfile, delimiter=' ', quotechar=' ')
+        detectionLabels = 'Image have following Visual Pollution Classes: '
         for row in spamreader:
-            detectionLabels = detectionLabels + detectionLabel.format(row[0]);
-    return detectionLabels;
+            # detectionLabels = detectionLabels + detectionLabel.format(pollutionClasses[int(row[0])]);
+            detectionLabels = detectionLabels + pollutionClasses[int(row[0])] + "\n";
+            detectedClasses.append(pollutionClasses[int(row[0])]);
+    return detectedClasses;
     
 def roadBalzerDetect(roadImagePath, imageFileName):
     #check if yolov7 folder exists
