@@ -43,11 +43,20 @@ nohup flask --app apiroutes run --host=0.0.0.0 &
 4. OSS Utilities: set of utilities that wraps OSS handling for upload and download of imaes
 
 ##Screenshots
-
+* Main Screen
+ 
 ![Main screen](https://user-images.githubusercontent.com/26005843/216072098-669cc35d-bc8f-4ba0-82db-18f8ecf22d6b.png)
+* Showing Results
+
 ![Result screen](https://user-images.githubusercontent.com/26005843/216072374-cbd49219-f837-4acc-b1ac-b87e7bea6ebf.png)
+
+* Model Inference Samples  
+
 ![Sample Inference 1](https://user-images.githubusercontent.com/26005843/216073049-b896be91-45c1-466f-9bc0-9786e4817cef.jpg)
+
 ![Sample Inference 2](https://user-images.githubusercontent.com/26005843/216073169-5a825bfc-04b9-4b2a-89ba-b152a6ab3ee9.jpg)
+
+![0af9f710ae913dad1bbea7acfcb9cb5c](https://user-images.githubusercontent.com/26005843/216073677-76584145-b643-4abf-a0e9-c7040439b355.jpg)
 
 
 
