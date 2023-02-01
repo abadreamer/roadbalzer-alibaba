@@ -3,9 +3,12 @@ from flask import Flask, request, url_for, flash, \
 from werkzeug.utils import secure_filename;
 import runmodel;
 import os;
+import apsaradbpostgresutil
 
 app = Flask(__name__)
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1000 * 1000;
+apsaradbpostgresutil.init_app(app);
+
 app.secret_key = '655d15c18354e0e34d31c48d55fba78e19c44492a88d69e856fc3f302e0dbb14';
 
 # ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
@@ -55,6 +58,8 @@ def detectRoadImage():
             flash('Detection succes, Image have following Visual Pollution Classes: ');
             for detectionClass in detectionClasses:
                 flash(detectionClass);
+                apsaradbpostgresutil.insertDectection(24.7738, 46.6964, "Riyadh", "Taawon", 
+                                                  filename, detectionClass, 1, "12479", "Riyadh")
             return redirect(url_for('detectRoadImage'))
     else:
         return render_template('index.html')
@@ -72,4 +77,4 @@ def detectRoadImage():
 #     '''
 
 with app.test_request_context():
-    print(url_for('detectRoadImage', imagepath='000ed1547634a24f09f22530065d46c9.jpg'))
+    print(url_for('detectRoadImage', ))

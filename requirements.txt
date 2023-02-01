@@ -6,3 +6,4 @@
 # boto3 replace boto3 with oss for alibaba oject storage service
 oss2
 Werkzeug
+psycopg2
