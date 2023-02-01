@@ -6,7 +6,8 @@ The app helps municipalities to automatically detect visual pollution elements i
 
 ## RoadBalzer team was able to utilize Alibaba cloud to deploy:
 * Simple Web Interface that enables employees to upload street images
-* ML Model: That detects visual pollution elements in given images, 
+* ML Model: Model inference, detects visual pollution elements in given images,
+* API and Backend code: Exposes backend API that interacts with (web interface, ML model, Object Storage and DB)
 * DB: Stores the results of detection and enable it for further dashbaords and processing.
 * Object storage: Stores the input images and output (with detected visual pollution)to enable fast retrieve.
 * Dashboards: Gives an overview of the current state of detected visual pollution.
@@ -31,6 +32,8 @@ nohup flask --app apiroutes run --host=0.0.0.0 &
 ## Prerequisites
 * Python 3.8.10
 * PIP
+* Flask
+* postgresql driver
 
 
 ## Code modules
@@ -38,4 +41,23 @@ nohup flask --app apiroutes run --host=0.0.0.0 &
 2. APIs: Flask application that exposes application functionality as APIs 
 3. Detection Module: Image Inference using the developed ML model
 4. OSS Utilities: set of utilities that wraps OSS handling for upload and download of imaes
+
+##Screenshots
+* Main Screen
+ 
+![Main screen](https://user-images.githubusercontent.com/26005843/216072098-669cc35d-bc8f-4ba0-82db-18f8ecf22d6b.png)
+* Showing Results
+
+![Result screen](https://user-images.githubusercontent.com/26005843/216072374-cbd49219-f837-4acc-b1ac-b87e7bea6ebf.png)
+
+* Model Inference Samples  
+
+![Sample Inference 1](https://user-images.githubusercontent.com/26005843/216073049-b896be91-45c1-466f-9bc0-9786e4817cef.jpg)
+
+![Sample Inference 2](https://user-images.githubusercontent.com/26005843/216073169-5a825bfc-04b9-4b2a-89ba-b152a6ab3ee9.jpg)
+
+![0af9f710ae913dad1bbea7acfcb9cb5c](https://user-images.githubusercontent.com/26005843/216073677-76584145-b643-4abf-a0e9-c7040439b355.jpg)
+
+
+
 
