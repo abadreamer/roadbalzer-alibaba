@@ -4,6 +4,7 @@ from werkzeug.utils import secure_filename;
 import runmodel;
 import os;
 import apsaradbpostgresutil
+from datetime import datetime
 
 app = Flask(__name__)
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1000 * 1000;
@@ -34,7 +35,7 @@ def downloadImage():
 @app.route("/detectroadimage", methods=['Get','Post'])
 def detectRoadImage():
     if request.method == 'POST':
-        print('in uploadImage', request.method);
+        print('Starting detection at: ', datetime.now());
         UPLOAD_FOLDER = './uploads'
         # imagepath = request.form['imagepath'];
         # imagepath = '0a4f38c94dd63cd8e5b9209dc9892146.jpg';
@@ -60,6 +61,7 @@ def detectRoadImage():
                 flash(detectionClass);
                 apsaradbpostgresutil.insertDectection(24.7738, 46.6964, "Riyadh", "Taawon", 
                                                   filename, detectionClass, 1, "12479", "Riyadh")
+            print('Ending detection at: ', datetime.now());
             return redirect(url_for('detectRoadImage'))
     else:
         return render_template('index.html')
