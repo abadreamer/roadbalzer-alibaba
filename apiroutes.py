@@ -56,11 +56,15 @@ def detectRoadImage():
             # return redirect(url_for('download_file', name=filename))
             print('input file uploaded to: ' , filePath);
             detectionClasses = runmodel.roadBalzerDetect(filePath, filename);
-            flash('Detection succes, Image have following Visual Pollution Classes: ');
-            for detectionClass in detectionClasses:
-                flash(detectionClass);
-                apsaradbpostgresutil.insertDectection(24.7738, 46.6964, "Riyadh", "Taawon", 
-                                                  filename, detectionClass, 1, "12479", "Riyadh")
+            if len(detectionClasses) > 0:
+                flash('Inference success, Image have following Visual Pollution Classes: ');
+                for detectionClass in detectionClasses:
+                    flash(detectionClass);
+                    apsaradbpostgresutil.insertDectection(24.7738, 46.6964, "Riyadh", "Taawon", 
+                                                    filename, detectionClass, 1, "12479", "Riyadh")
+            else:
+                flash('Inference success, Image have no Visual Pollution Classes');
+
             print('Ending detection at: ', datetime.now());
             return redirect(url_for('detectRoadImage'))
     else:

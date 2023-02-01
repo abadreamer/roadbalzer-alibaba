@@ -50,13 +50,14 @@ def parseLabels(detectPath, imageFileName):
     # detectionLabel =' ';
     detectionLabels ='';
     detectedClasses = [];
-    with open(labelsFilePath, newline='') as csvfile:
-        spamreader = csv.reader(csvfile, delimiter=' ', quotechar=' ')
-        detectionLabels = 'Image have following Visual Pollution Classes: '
-        for row in spamreader:
-            # detectionLabels = detectionLabels + detectionLabel.format(pollutionClasses[int(row[0])]);
-            detectionLabels = detectionLabels + pollutionClasses[int(row[0])] + "\n";
-            detectedClasses.append(pollutionClasses[int(row[0])]);
+    if (os.path.isfile(labelsFilePath) == True ):
+        with open(labelsFilePath, newline='') as csvfile:
+            spamreader = csv.reader(csvfile, delimiter=' ', quotechar=' ')
+            detectionLabels = 'Image have following Visual Pollution Classes: '
+            for row in spamreader:
+                # detectionLabels = detectionLabels + detectionLabel.format(pollutionClasses[int(row[0])]);
+                detectionLabels = detectionLabels + pollutionClasses[int(row[0])] + "\n";
+                detectedClasses.append(pollutionClasses[int(row[0])]);
     return detectedClasses;
     
 def roadBalzerDetect(roadImagePath, imageFileName):
