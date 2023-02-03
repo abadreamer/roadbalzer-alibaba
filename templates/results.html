@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+{% block body %}
+<h1>Visual pollution detection Results</h1>
+<table>
+  <tr>
+    <a href="{{ url_for('detectRoadImage')}}">Back to main!</a>
+  </tr>
+  <tr>
+    <td>Input image:</td>
+    <td>
+      <img src="{{ url_for('download_in_file', filename=input_image) }}" alt="Source Image" width="960" height="500">
+    </td>
+  </tr>
+  <tr>
+    <td>Result image:</td>
+    <td>
+      <img src="{{ url_for('download_out_file', filename=output_image) }}" alt="Source Image" width="960" height="500">
+    </td>
+  <tr>
+<table>
+{% endblock %}

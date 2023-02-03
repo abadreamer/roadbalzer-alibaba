@@ -44,7 +44,15 @@ pollutionClasses = ['Graffiti', 'Faded Signage', 'Potholes', 'Garbage',
 #     #     content_got += chunk
 #     result = bucket.get_object_to_file(buketPath, roadImagePath);
 #     # print(result);
-
+def clearPreviousRun(detectPath, imageFileName):
+    labelsFileName = imageFileName[0:imageFileName.rindex('.')]+'.txt';
+    labelsFilePath = os.path.join(detectPath, 'exp', 'labels', labelsFileName);
+    if os.path.isfile(labelsFilePath):
+        os.remove(labelsFilePath)
+    imageFilePath = os.path.join(detectPath, 'exp', imageFileName);
+    if os.path.isfile(imageFilePath):
+        os.remove(imageFilePath)
+    
 def parseLabels(detectPath, imageFileName):
     labelsFileName = imageFileName[0:imageFileName.rindex('.')]+'.txt';
     labelsFilePath = os.path.join(detectPath, 'exp', 'labels', labelsFileName);
@@ -90,6 +98,7 @@ def roadBalzerDetect(roadImagePath, imageFileName):
 
     if useDetectFn:
         print('starting detect')
+        clearPreviousRun(detectPath, imageFileName);
         detectfn.detectMain(source=roadImagePath, weights=modelPath, conf=0.25, imgsz=640, 
                              save_txt=True, classes=None, exist_ok=True, project=detectPath);
         outputImage = os.path.join(detectPath, 'exp', imageFileName);
