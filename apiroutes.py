@@ -7,10 +7,10 @@ import apsaradbpostgresutil
 from datetime import datetime
 
 app = Flask(__name__)
-app.config['MAX_CONTENT_LENGTH'] = 16 * 1000 * 1000;
+app.config.from_prefixed_env()
+# app.config['MAX_CONTENT_LENGTH'] = 16 * 1000 * 1000;
 apsaradbpostgresutil.init_app(app);
 
-app.secret_key = '655d15c18354e0e34d31c48d55fba78e19c44492a88d69e856fc3f302e0dbb14';
 
 # ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg',}
@@ -55,11 +55,15 @@ def detectRoadImage():
             file.save(filePath);
             # return redirect(url_for('download_file', name=filename))
             print('input file uploaded to: ' , filePath);
-            detectionClasses = runmodel.roadBalzerDetect(filePath, filename);
+            result = runmodel.roadBalzerDetect(filePath, filename);
+            detectionClasses = result[0];            
             if len(detectionClasses) > 0:
+                detectionClassesDict = result[1].to_dict()['xmin'];
                 flash('Inference success, Image has following Visual Pollution Classes: ');
+                for key, value in detectionClassesDict.items():
+                    flash("No of detected objects from class {}: {}".format(key, value) );
+
                 for detectionClass in detectionClasses:
-                    flash(detectionClass);
                     apsaradbpostgresutil.insertDectection(24.7738, 46.6964, "Riyadh", "Taawon", 
                                                     filename, detectionClass, 1, "12479", "Riyadh")
             else:

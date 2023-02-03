@@ -7,7 +7,8 @@ import csv;
 sys.path.append('./yolov7');
 from yolov7 import detect;
 from yolov7 import detectfn;
-
+import pandas as pd
+import numpy as np
 pollutionClasses = ['Graffiti', 'Faded Signage', 'Potholes', 'Garbage', 
                     'Construction Road', 'Broken Signage', 'Bad Billboard',
                     'Sand on Road', 'Clutter sidewalk', 'Unkept Facade'];
@@ -48,17 +49,19 @@ def parseLabels(detectPath, imageFileName):
     labelsFileName = imageFileName[0:imageFileName.rindex('.')]+'.txt';
     labelsFilePath = os.path.join(detectPath, 'exp', 'labels', labelsFileName);
     # detectionLabel =' ';
-    detectionLabels ='';
+    # detectionLabels ='';
     detectedClasses = [];
     if (os.path.isfile(labelsFilePath) == True ):
         with open(labelsFilePath, newline='') as csvfile:
             spamreader = csv.reader(csvfile, delimiter=' ', quotechar=' ')
-            detectionLabels = 'Image have following Visual Pollution Classes: '
+            # detectionLabels = 'Image have following Visual Pollution Classes: '
             for row in spamreader:
                 # detectionLabels = detectionLabels + detectionLabel.format(pollutionClasses[int(row[0])]);
-                detectionLabels = detectionLabels + pollutionClasses[int(row[0])] + "\n";
-                detectedClasses.append(pollutionClasses[int(row[0])]);
-    return detectedClasses;
+                # detectionLabels = detectionLabels + pollutionClasses[int(row[0])] + "\n";
+                detectedClasses.append([pollutionClasses[int(row[0])], row[1]]);
+            dataFrame = pd.DataFrame(detectedClasses, columns=['class','xmin']);
+            dataFrame = dataFrame.groupby('class').count();
+    return [detectedClasses, dataFrame];
     
 def roadBalzerDetect(roadImagePath, imageFileName):
     #check if yolov7 folder exists
