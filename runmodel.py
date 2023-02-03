@@ -59,6 +59,7 @@ def parseLabels(detectPath, imageFileName):
     # detectionLabel =' ';
     # detectionLabels ='';
     detectedClasses = [];
+    dataFrame = None;
     if (os.path.isfile(labelsFilePath) == True ):
         with open(labelsFilePath, newline='') as csvfile:
             spamreader = csv.reader(csvfile, delimiter=' ', quotechar=' ')
